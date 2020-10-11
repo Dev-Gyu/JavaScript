@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+      /* Navigation과 Article을 나란히 위치시키기 위해 div사용 및 id선택자 사용함 */
+      #grid{
+        border: 5px solid pink;
+        display: grid;
+        grid-template-colums: 150px 1fr; /* 첫번째칸 가로 150px 두번째는 나머지 페이지 전체영역 사용 */
+      }
+      div {
+        border: 5px solid gray;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- div태그는 디자인을 목적으로 하기위한 아무 의미없는 블록 엘리먼트 -->
+  <div id="grid">
+    <div>NAVIGATION</div>
+    <div>ARTICLE</div>
+  </div>
+  </body>
+</html>
