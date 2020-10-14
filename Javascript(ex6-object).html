@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <title></title>
+  <body>
+      <h1>Object</h1>
+    <script>
+      var coworkers = {
+        "programmer":"egoing",
+        "designer":"leezche"
+      }
+      document.write("programmer = " + coworkers.programmer + " 입니다<br>");
+      document.write("designer = " + coworkers.designer + " 입니다<br>");
+
+      //coworkers 객체에 멤버변수 추가
+      coworkers.bookkeeper = "duru";
+      document.write("bookkeeper = " + coworkers.bookkeeper + " 입니다<br>");
+
+      //문자열 형태의 변수 이름 추가방법 -> 객체이름[변수 이름](O), 객체이름.[변수 이름](X)
+      coworkers["data scientist"] = "taeho";
+      document.write("data scientist = " + coworkers["data scientist"] + "입니다");
+    </script>
+  </body>
+</html

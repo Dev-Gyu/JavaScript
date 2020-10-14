@@ -1,0 +1,22 @@
+#grid{
+  display: grid;
+  grid-template-columns: 140px 1fr;
+}
+#grid ol{
+  width: 100px;
+  margin-left: 20px;
+  padding-left: 10px;
+}
+h1{
+  text-align: center;
+  font-size: 50px;
+  border-bottom: 1px solid gray;
+  padding-bottom: 20px;
+}
+#article{
+    border-left: 1px solid gray;
+    padding-left: 20px;
+}
+img{
+  width: 200px;
+}

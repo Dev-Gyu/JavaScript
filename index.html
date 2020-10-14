@@ -1,39 +1,15 @@
 <!DOCTYPE HTML>
 <html>
-<!-- CSS 선언부(/style) 까지-->
-<style>
-  #grid{
-    display: grid;
-    grid-template-columns: 150px 1fr;
-  }
-  #article {
-    padding-left: 25 px;
-  }
-  h1{
-    font-size: 45px;
-    text-align: center;
-    border-bottom: 1px solid gray;
-    margin: 0px;
-    padding: 20px;
-
-  }
-  #grid ol{
-    border-right: 1px solid gray;
-    width: 100px;
-    margin: 0px;
-    padding: 20px;
-  }
-  body{
-    margin: 0px;
-  }
-</style>
-
 <head>
   <title>WEB1 - Welcome</title>
   <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="color.js"></script>
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
   <h1><a href="index.html">WEB</a></h1>
+    <input type="button" value="Dark Mode" onclick="nightDayHandler(this);">
 
   <div id="grid">
     <div><ol>
