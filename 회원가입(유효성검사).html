@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 양식</title>
+    <style>
+        .header{
+            background-color:dimgrey;
+            width:40%;
+            color: white;
+        }
+        table{
+            text-align:center;
+        }
+        .button{
+            background-color: peru;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(e){
+            //한글 정규식패턴은[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]로 검사 가능. 단, 자음,모음만으론 이름이 안되니 [가-힣]만 통과하도록 설정
+            //[a-zA-Z]는 외국인
+            var nameReg = /^([가-힣]{2,}|[a-zA-Z]{2,})$/;
+            var idpwReg = /^[a-zA-Z0-9]{4,12}$/;
+            var femailReg = /^([\w-]+(?:\.[\w-]+)*)$/i;
+            var semailReg = /^((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            var name = document.getElementById("name");
+            var id = document.getElementById("id");
+            var password = document.getElementById("password");
+            var password2 = document.getElementById("password2");
+            var date = document.getElementById("date");
+            var sex = document.getElementById("sex");
+            var fEmail = document.getElementById("firstemail");
+            var sEmail = document.getElementById("secondemail");
+            var emailSelect = document.getElementById("emailselect");
+
+            //P태그에 오류메시지 삽입하여 insertTo(해당 입력칸의td태그)객체에 자식태그 삽입함
+            function insertP(insertTo, insertText, color){
+                var p = document.createElement("P");
+                p.setAttribute("id",insertTo.id)
+                p.style.color = color;
+                p.textContent = insertText;
+                insertTo.appendChild(p);
+            }
+            //이벤트 발생시 insertP함수 콜백하여 addTo(해당 입력칸의td태그)객체에 자식태그 삽입함
+            function addEvent(parentNode, addTo, regExp,errorText){
+                var tdLength = addTo.childNodes.length;
+                var regExpType = (typeof regExp);
+                //정규식의 리턴타입 = object
+                if(regExpType == "object"){
+                if(!regExp.test(parentNode.value)){
+                    if(tdLength == 1){
+                    insertP(addTo,errorText, "red");
+                    }
+                    if(tdLength == 2){
+                        addTo.lastChild.textContent = errorText;
+                        addTo.lastChild.style.color = "red";
+                    }
+                }else{
+                    if(tdLength == 1){
+                    insertP(addTo,"유효성 적합", "green");
+                    }
+                    if(tdLength == 2){
+                        addTo.lastChild.textContent = "유효성 적합";
+                        addTo.lastChild.style.color = "green";
+                    }
+                }
+                //정규식이 아닌 문자열로의 비교시 리턴타입 = string
+                }else if(regExpType == "string"){
+                    if(!regExp.match(parentNode.value)){
+                    if(tdLength == 1){
+                    insertP(addTo,errorText, "red");
+                    }
+                    if(tdLength == 2){
+                        addTo.lastChild.textContent = errorText;
+                        addTo.lastChild.style.color = "red";
+                    }
+                }else{
+                    if(tdLength == 1){
+                    insertP(addTo,"유효성 적합", "green");
+                    }
+                    if(tdLength == 2){
+                        addTo.lastChild.textContent = "유효성 적합";
+                        addTo.lastChild.style.color = "green";
+                    }
+                }
+                }
+            }
+
+            //이름 정규식 패턴 검사
+            name.addEventListener("change", function(e){
+                var nametd = document.getElementById("nametd");
+                addEvent(this, nametd, nameReg,"이름은 한글(단모음,자음 제외), 영문대,소문자 최소 2글자 이상");
+            },false);
+
+            //아이디 정규식 패턴 검사
+            id.addEventListener("change", function(e){
+                var idtd = document.getElementById("idtd");
+                addEvent(this, idtd, idpwReg,"ID는 영문대,소문자,숫자로 최소 4글자 최대 12글자 이내");
+            },false);
+
+            //비밀번호 정규식 패턴 검사
+            password.addEventListener("change", function(e){
+                var passwordtd = document.getElementById("passwordtd");
+                addEvent(this, passwordtd, idpwReg,"비밀번호는 영문대,소문자,숫자로 최소 4글자 최대 12글자 이내");
+            },false);
+
+            //비밀번호 일치하는지 여부 검사
+            password2.addEventListener("change", function(e){
+                var password = document.getElementById("password").value;
+                var password2td = document.getElementById("password2td");
+                var pw2Reg = password;
+                addEvent(this, password2td, pw2Reg,"비밀번호가 일치하지 않습니다.");
+            },false);
+
+            //이메일 @ 뒤 주소 선택시에도 첫번째칸, 두번째칸 정규식 확인함
+            emailSelect.addEventListener("change", function(e){
+                var value = emailSelect.value;
+                document.getElementById("secondemail").value = value;
+                if(!semailReg.test(document.getElementById("secondemail").value)){
+
+                    if(!femailReg.test(fEmail.value)){
+                        addEvent(fEmail, emailspan, femailReg,"첫번쨰, 두번째 이메일을 정확히 입력하세요");
+                    }else{
+                        addEvent(sEmail, emailspan, semailReg,"두번째 이메일을 정확히 입력하세요");
+                        }
+
+                }else{
+                    if(!femailReg.test(fEmail.value)){
+                    addEvent(fEmail, emailspan, femailReg,"첫번째 이메일을 정확히 입력하세요");
+                     }else{
+                    addEvent(sEmail, emailspan, semailReg,"유효성 적합");
+                    }
+                }
+            },false);
+            
+            //첫번째 이메일주소 칸 정규식 패턴 검사 (첫번째칸, 두번쨰칸 모두 정규식 확인)
+            fEmail.addEventListener("change", function(e){
+                var emailspan = document.getElementById("emailspan");
+                if(!femailReg.test(fEmail.value)){
+
+                if(!semailReg.test(sEmail.value)){
+                addEvent(sEmail, emailspan, semailReg,"첫번쨰, 두번째 이메일을 정확히 입력하세요");
+                }else{
+                addEvent(fEmail, emailspan, femailReg,"첫번쨰 이메일을 정확히 입력하세요");
+                }
+
+                }else{
+                if(!semailReg.test(sEmail.value)){
+                addEvent(sEmail, emailspan, semailReg,"두번째 이메일을 정확히 입력하세요");
+                }else{
+                addEvent(fEmail, emailspan, femailReg,"유효성 적합");
+                }
+                }
+            },false);
+
+            //두번째 이메일주소 칸 정규식 패턴 검사 (첫번쨰칸, 두번째칸 모두 정규식 확인)
+            sEmail.addEventListener("change", function(e){
+                var emailspan = document.getElementById("emailspan");
+                if(!semailReg.test(sEmail.value)){
+
+                    if(!femailReg.test(fEmail.value)){
+                        addEvent(fEmail, emailspan, femailReg,"첫번쨰, 두번째 이메일을 정확히 입력하세요");
+                    }else{
+                        addEvent(sEmail, emailspan, semailReg,"두번째 이메일을 정확히 입력하세요");
+                        }
+
+                }else{
+                    if(!femailReg.test(fEmail.value)){
+                    addEvent(fEmail, emailspan, femailReg,"첫번째 이메일을 정확히 입력하세요");
+                     }else{
+                    addEvent(sEmail, emailspan, semailReg,"유효성 적합");
+                    }
+                }
+            },false);
+            
+
+        },false)
+    </script>
+</head>
+<body>
+    <form method="POST">
+    <table border="1">
+        <tr>
+            <td class="header"><label for='name'>이름</label></td><td id="nametd"><input id="name" type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td class="header"><label for='id'>아이디</label></td><td id="idtd"><input id="id" type="text" name="id"></td>
+        </tr>
+        <tr>
+            <td class="header"><label for='password'>비밀번호</label></td><td id="passwordtd"><input id="password" type="text" name="password"></td>
+        </tr>
+        <tr>
+            <td class="header"><label for='password2'>비밀번호 확인</label></td><td id="password2td"><input id="password2" type="text" name="password2"></td>
+        </tr>
+        <tr>
+            <td class="header"><label for='date'>생년월일/성별</label></td><td><input id="date" type="date" name="date">
+            <input id="sex" type="radio" name="sex" value="남자">남자
+            <input id="sex" type="radio" name="sex" value="여자">여자
+        </td>
+        </tr>
+        <tr>
+            <td class="header" width="50%"><label for='firstemail'>이메일</label></td><td><input id="firstemail" type="text" name="firstemail"></div>
+               @<input id="secondemail" type="text" name="secondemail">
+                <select id="emailselect" name="emailselect">
+                    <option value="abc.com"selected>메일주소선택</option>
+                    <option>naver.com</option>
+                    <option>gmail.com</option>
+                </select><br>
+                <input type="text" name="validation"> <input type="button" value="인증번호 확인"><br>
+                <span id="emailspan"><span></span></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="header"><label for='tel'>연락처</label></td>
+            <td><select id="tel" name="cellphone">
+                    <option selected>선택</option>
+                    <option>010</option>
+                    <option>011</option>
+                </select>
+                -<input type="text" name="cel2">-<input type="text" name="cel3"><br>
+
+                <select name="telephone">
+                    <option selected>선택</option>
+                    <option>02</option>
+                    <option>031</option>
+                </select>
+                -<input type="text" name="tel2">-<input type="text" name="tel3">
+                
+            </td>
+        </tr>
+
+        <tr>
+            <td class="header"><label for='addresscode'>우편번호</label></td>
+            <td>
+                <input id="addresscode" type="text" name="addresscode">
+                <input type="button" name="addresssearch" value="주소검색">
+            </td>
+        </tr>
+        <tr>
+            <td class="header"><label for='address'>주소</label></td>
+            <td>
+                <input id="address" type="text" name="address" size="50"><br>
+                <input id="addressdetail" type="text" name="addressdetail" size="50">
+            </td>
+        </tr>
+        <tr>
+            <td class="header"><label for='receive'>정보수신여부</label></td>
+            <td>
+                서비스 및 이벤트 소식을 
+                <input type="checkbox" id="receive"name="receive" value="email">Email로 수신하겠습니다.
+                <input type="checkbox" name="receive" value="sms">SMS로 수신하겠습니다.
+            </td> 
+        </tr>
+        <tr>
+            <td colspan="2"><input class="button" type="submit" value="저장">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="button" type="reset" value="취소"></td>
+        </tr>
+        
+
+    </table>
+    </form>
+</body>
+</html>
